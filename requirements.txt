@@ -1,0 +1,3 @@
+gspread
+slack_sdk
+google-auth
