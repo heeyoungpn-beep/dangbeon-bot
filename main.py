@@ -25,7 +25,11 @@ def fetch_rows():
     response.raise_for_status()
     response.encoding = "utf-8"
     reader = csv.DictReader(io.StringIO(response.text))
-    return list(reader)
+    rows = list(reader)
+    print(f"실제 컬럼 헤더 목록: {reader.fieldnames!r}")  # 디버그용
+    if rows:
+        print(f"첫 번째 행 전체 내용: {rows[0]!r}")  # 디버그용
+    return rows
 def parse_date(value):
     """'2026.07.13' 등 다양한 날짜 형식을 date 객체로 변환합니다."""
     value = (value or "").strip()
@@ -39,9 +43,7 @@ def find_next_schedule(rows, today):
     """오늘보다 크거나 같은 날짜 중 가장 빠른 일정 행을 반환합니다."""
     candidates = []
     for row in rows:
-        raw = row.get("날짜", "")
-        parsed = parse_date(raw)
-        print(f"원본 날짜값: {raw!r} → 파싱 결과: {parsed}")  # 디버그용
+        parsed = parse_date(row.get("날짜", ""))
         if parsed and parsed >= today:
             candidates.append((parsed, row))
     if not candidates:
