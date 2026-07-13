@@ -1,26 +1,23 @@
 name: 당번 안내 알림
-
 on:
   schedule:
     # 매주 일요일 UTC 12:00 = 한국시간(KST) 21:00
     - cron: "0 12 * * 0"
+    # 매주 금요일 UTC 09:00 = 한국시간(KST) 18:00 (돌아오는 일요일 당번 미리 안내)
+    - cron: "0 9 * * 5"
   workflow_dispatch: {}  # 수동 실행 버튼도 사용 가능하게 함
-
 jobs:
   send-notification:
     runs-on: ubuntu-latest
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
-
       - name: 파이썬 설치
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: 패키지 설치
         run: pip install -r requirements.txt
-
       - name: 알림 스크립트 실행
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
