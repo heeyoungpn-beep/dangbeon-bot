@@ -1,10 +1,10 @@
 name: 당번 안내 알림
 on:
   schedule:
-    # 매주 일요일 UTC 12:00 = 한국시간(KST) 21:00
-    - cron: "0 12 * * 0"
-    # 매주 금요일 UTC 09:00 = 한국시간(KST) 18:00 (돌아오는 일요일 당번 미리 안내)
-    - cron: "0 9 * * 5"
+    # 매주 일요일 KST 21:00 목표 (정각 혼잡 회피용으로 17분 당김, UTC 11:43)
+    - cron: "43 11 * * 0"
+    # 매주 금요일 KST 18:00 목표 (정각 혼잡 회피용으로 13분 당김, UTC 08:47)
+    - cron: "47 8 * * 5"
   workflow_dispatch: {}  # 수동 실행 버튼도 사용 가능하게 함
 jobs:
   send-notification:
@@ -23,3 +23,4 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
         run: python main.py
+ 
